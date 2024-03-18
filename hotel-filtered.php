@@ -1,6 +1,6 @@
 <?php
 
-    $hotels = [
+    $hotels = [ 
 
         [
             'name' => 'Hotel Belvedere',
@@ -40,7 +40,20 @@
 
     ];
 
+    $filteredHotels = [];
 
+    // verifico se la checkbox sia stata selezionata
+    if (isset($_GET['parking']) && $_GET['parking'] == true) {
+    // filtro gli hotel con parcheggio disponibile
+        foreach ($hotels as $currentHotel) {
+            if ($currentHotel['parking'] == true) {
+                $filteredHotels[] = $currentHotel;
+            }
+        }
+    } else {
+    // se la checkbox non è stata selezionata, mostro tutti gli hotel
+    $filteredHotels = $hotels;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +94,7 @@
         </thead>
         <tbody>
         <?php 
-        foreach($hotels as $currentHotel) { ?>
+        foreach($filteredHotels as $currentHotel) { ?>
             <tr>
                 <td><?php echo $currentHotel['name']; ?></td>
                 <td><?php echo $currentHotel['description']; ?></td>
