@@ -41,18 +41,23 @@
     ];
 
     $filteredHotels = [];
+    $vote = $_GET['vote'];
 
     // verifico se la checkbox sia stata selezionata
     if (isset($_GET['parking']) && $_GET['parking'] == true) {
-    // filtro gli hotel con parcheggio disponibile
-        foreach ($hotels as $currentHotel) {
-            if ($currentHotel['parking'] == true) {
-                $filteredHotels[] = $currentHotel;
-            }
+    // filtro gli hotel con parcheggio disponibile e voto maggiore o uguale al voto selezionato dall'utente
+    foreach ($hotels as $currentHotel) {
+        if ($currentHotel['parking'] == true && ($vote === 'Voto' || $currentHotel['vote'] >= $vote)) {
+            $filteredHotels[] = $currentHotel;
         }
+    }
     } else {
-    // se la checkbox non è stata selezionata, mostro tutti gli hotel
-    $filteredHotels = $hotels;
+    // se la checkbox non è stata selezionata, mostriamo solo gli hotel con un voto maggiore o uguale al voto selezionato dall'utente
+    foreach ($hotels as $currentHotel) {
+        if ($vote === 'Voto' || $currentHotel['vote'] >= $vote) {
+            $filteredHotels[] = $currentHotel;
+        }
+    }
     }
 ?>
 
@@ -79,6 +84,14 @@
               Parcheggio
             </label>
         </div>
+        <select class="form-select" aria-label="Default select example" name="vote">
+            <option selected>Voto</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+            <option value="5">5</option>
+        </select>
         <input type="submit" value="Filtra" class="btn btn-primary">
     </form>
 
